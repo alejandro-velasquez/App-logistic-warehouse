@@ -8,6 +8,7 @@ import com.logistic_warehouse.infrastructure.mappers.UserMapper;
 import com.logistic_warehouse.infrastructure.persistence.UserRepository;
 import com.logistic_warehouse.utils.enu.Role;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +16,9 @@ public class AuthService implements IModelAuth {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     UserMapper userMapper;
@@ -29,6 +33,8 @@ public class AuthService implements IModelAuth {
 
         UserEntity userSave = userMapper.registerRequestDTOToUserEntity(registerRequestDTO);
         userSave.setRole(role);
+        userSave.setPassword(passwordEncoder.encode(registerRequestDTO.getPassword()));
+        userSave.setEmail(registerRequestDTO.getEmail());
 
         userRepository.save(userSave);
 
