@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity(name = "pallets")
 @Setter
 @Getter
@@ -20,6 +22,10 @@ public class PalletEntity {
     @Column(nullable = false)
     private Double capacity;
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private PalletStatus status;
+
+    @OneToMany(mappedBy = "pallet")
+    private Set<ShipmentEntity> shipments;
 
 }

@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "users")
 @Setter
@@ -31,6 +32,9 @@ public class UserEntity implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "userCarrier")
+    private Set<ShipmentEntity> shipments;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

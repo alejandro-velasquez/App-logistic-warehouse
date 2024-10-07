@@ -26,5 +26,15 @@ public class ShipmentEntity {
     @Column(nullable = false)
     private Double dimensionHeight;
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private ShipmentStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "id_pallet")
+    private PalletEntity pallet;
+
+    @ManyToOne
+    @JoinColumn(name = "id_user_carrier")
+    private UserEntity userCarrier;
+
 }
