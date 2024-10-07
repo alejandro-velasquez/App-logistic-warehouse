@@ -1,5 +1,6 @@
 package com.logistic_warehouse.infrastructure.controller.impl;
 
+import com.logistic_warehouse.application.dto.request.LoginRequestDTO;
 import com.logistic_warehouse.application.dto.request.RegisterRequestDTO;
 import com.logistic_warehouse.domain.imodel.IModelAuth;
 import com.logistic_warehouse.utils.enu.Role;
@@ -29,5 +30,11 @@ public class AuthController implements com.logistic_warehouse.infrastructure.con
     public ResponseEntity<?> registerCarrier(@RequestBody @Valid RegisterRequestDTO registerRequestDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(registerRequestDTO,Role.CARRIER));
 
+    }
+
+    @PostMapping("/login")
+    @Override
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequestDTO loginRequestDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(authService.login(loginRequestDTO));
     }
 }

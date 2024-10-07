@@ -20,6 +20,8 @@ public class ApplicationConfig {
     @Autowired
     UserRepository userRepository;
 
+
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
