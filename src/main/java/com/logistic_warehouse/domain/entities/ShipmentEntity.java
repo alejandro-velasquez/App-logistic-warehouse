@@ -2,16 +2,14 @@ package com.logistic_warehouse.domain.entities;
 
 import com.logistic_warehouse.utils.enu.ShipmentStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity(name = "shipments")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ShipmentEntity {
 
     @Id
