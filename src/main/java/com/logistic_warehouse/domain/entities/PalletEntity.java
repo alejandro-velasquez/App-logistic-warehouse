@@ -2,10 +2,7 @@ package com.logistic_warehouse.domain.entities;
 
 import com.logistic_warehouse.utils.enu.PalletStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
@@ -14,6 +11,7 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class PalletEntity {
 
     @Id
@@ -24,6 +22,8 @@ public class PalletEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private PalletStatus status;
+    @Column(nullable = false)
+    private String location;
 
     @OneToMany(mappedBy = "pallet")
     private Set<ShipmentEntity> shipments;

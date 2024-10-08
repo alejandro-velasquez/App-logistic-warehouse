@@ -17,6 +17,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final String[] ADMIN_SOURCES = {"/api/pallets/**","/auth/**"};
+
     @Autowired
     AuthenticationProvider authenticationProvider;
 
@@ -29,7 +31,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF por ahora
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll() // Permitir el acceso a /login sin autenticación
+                        .requestMatchers("/auth/**","/api/pallets/**").permitAll() // Permitir el acceso a /login sin autenticación
                         .anyRequest().authenticated())        // Cualquier otra solicitud debe estar autenticada
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)// Stateless (sin sesión)
