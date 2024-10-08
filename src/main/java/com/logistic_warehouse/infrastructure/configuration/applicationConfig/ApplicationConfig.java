@@ -20,8 +20,6 @@ public class ApplicationConfig {
     @Autowired
     UserRepository userRepository;
 
-
-
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -46,8 +44,8 @@ public class ApplicationConfig {
     //Metodo para cargar los detalles del usuario mediante la autenticacion
     @Bean
     public UserDetailsService userDetailsService() {
-        return email -> {
-            UserEntity user = userRepository.findByUsername(email);
+        return username -> {
+            UserEntity user = userRepository.findByUsername(username);
             if (user == null) {
                 throw new UsernameNotFoundException("User not found");
             }

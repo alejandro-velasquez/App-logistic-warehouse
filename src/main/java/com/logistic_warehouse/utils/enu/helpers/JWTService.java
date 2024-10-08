@@ -9,10 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.Date;
 
 @Component
 public class JWTService {
@@ -50,8 +50,6 @@ public class JWTService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-
-
     }
 
     public <T> T getClaim(String token, Function<Claims, T> claimsResolver) {
@@ -63,20 +61,20 @@ public class JWTService {
         return getClaim(token, Claims::getSubject);
     }
 
-//    public Date getDateExpirationFromToken(String token) {
-//        return getClaim(token,Claims::getExpiration);
-//    }
+    public Date getDateExpirationFromToken(String token) {
+        return getClaim(token,Claims::getExpiration);
+    }
 
-//    public Boolean isTokenExpired(String token) {
-//        return getDateExpirationFromToken(token).before(new Date());
-//    }
+    public Boolean isTokenExpired(String token) {
+        return getDateExpirationFromToken(token).before(new Date());
+    }
 
-//    public Boolean isTokenValid(String token, UserDetails userDetails) {
-//        String username = getUsernameFromToken(token);
-//        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
-//    }
-//
-//    public Claims extractAllClaims(String token) {
-//        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-//    }
+    public Boolean isTokenValid(String token, UserDetails userDetails) {
+        String username = getUsernameFromToken(token);
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+    }
+
+    public Claims extractAllClaims(String token) {
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+    }
 }

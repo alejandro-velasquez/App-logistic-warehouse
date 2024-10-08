@@ -59,7 +59,6 @@ public class AuthService implements IModelAuth {
     @Override
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequestDTO.getUsername(), loginRequestDTO.getPassword());
-
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         if(authentication.isAuthenticated()){
             UserEntity user = userRepository.findByUsername(loginRequestDTO.getUsername());
