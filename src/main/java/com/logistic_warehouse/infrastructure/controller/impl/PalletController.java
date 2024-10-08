@@ -35,4 +35,9 @@ public class PalletController implements IPalletController {
     public ResponseEntity<?> update(@RequestBody @Valid PalletRequestCreateDTO palletRequestCreateDTO, @PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(palletService.update(palletRequestCreateDTO,id));
     }
+
+    @Override
+    public ResponseEntity<?> delete(PalletEntity palletEntity) {
+        return null;
+    }
 }
