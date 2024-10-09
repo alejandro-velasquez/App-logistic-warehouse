@@ -1,6 +1,7 @@
 package com.logistic_warehouse.application.service.impl;
 
 import com.logistic_warehouse.application.dto.request.PalletRequestCreateDTO;
+import com.logistic_warehouse.application.dto.response.PalletResponseDTO;
 import com.logistic_warehouse.application.dto.response.PalletResponseReadAllDTO;
 import com.logistic_warehouse.application.dto.response.ShipmentListDTO;
 import com.logistic_warehouse.domain.entities.PalletEntity;
@@ -80,5 +81,16 @@ public class PalletService implements IModelPallet {
         return pallets.stream()
                 .map(palletMapper::toPalletToPalleResponseReadAllDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public PalletResponseDTO readById(Long id) {
+        Optional<PalletEntity> pallet = palletRepository.findById(id);
+
+        if(pallet.isEmpty()){
+            throw new EntityNotFoundException("entity not found");
+        }
+
+        return palletMapper.toPalleEntityToPalleResponseDTO(pallet.get());
     }
 }

@@ -8,6 +8,6 @@ import com.logistic_warehouse.infrastructure.controller.generic.ReadAll;
 import com.logistic_warehouse.infrastructure.controller.generic.ReadById;
 import org.springframework.http.ResponseEntity;
 
-public interface IShipmentController extends Create<ShipmentRequestDTO>, Delete<ShipmentEntity,Long>, ReadAll<ShipmentEntity>, ReadById<ShipmentEntity,Long> {
+public interface IShipmentController extends Create<ShipmentRequestDTO>, Delete<ShipmentEntity,Long>, ReadAll<ShipmentEntity>, ReadById<Long> {
 
 }

@@ -8,6 +8,7 @@ import com.logistic_warehouse.infrastructure.controller.interfaces.IPalletContro
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -65,7 +66,7 @@ public class PalletController implements IPalletController {
     @PutMapping("/update/{id}")
     @Override
     public ResponseEntity<?> update(@RequestBody @Valid PalletRequestCreateDTO palletRequestCreateDTO, @PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(palletService.update(palletRequestCreateDTO,id));
+        return ResponseEntity.status(HttpStatus.OK).body(palletService.update(palletRequestCreateDTO, id));
     }
 
     @Override
@@ -78,5 +79,16 @@ public class PalletController implements IPalletController {
     @Override
     public ResponseEntity<List<PalletResponseReadAllDTO>> readAll() {
         return ResponseEntity.ok(palletService.readAll());
+    }
+
+
+    @GetMapping("/read-by-id/{id}")
+    @Override
+    public ResponseEntity<?> readById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(palletService.readById(id));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }
