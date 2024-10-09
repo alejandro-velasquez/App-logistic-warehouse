@@ -43,9 +43,11 @@ public class AuthService implements IModelAuth {
         }
 
         UserEntity userSave = userMapper.registerRequestDTOToUserEntity(registerRequestDTO);
+        userSave.setUsername(registerRequestDTO.getUsername());
         userSave.setRole(role);
         userSave.setPassword(passwordEncoder.encode(registerRequestDTO.getPassword()));
         userSave.setEmail(registerRequestDTO.getEmail());
+
 
         userRepository.save(userSave);
 

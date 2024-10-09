@@ -11,25 +11,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class ShipmentCreateResponseDTO {
-
+public class ShipmentListDTO {
 
 
     private Long id;
-
     private Double weight;
-
     private Double dimensionLarge;
-
     private Double dimensionWidth;
-
     private Double dimensionHeight;
-
-
     private ShipmentStatus status;
-
-    private PalletDTO pallet;
-
     private UserEntity userCarrier;
 
 }

@@ -1,6 +1,7 @@
 package com.logistic_warehouse.infrastructure.configuration.security;
 
 import com.logistic_warehouse.utils.enu.helpers.JWTFilter;
+import com.logistic_warehouse.utils.enu.helpers.JWTFilter;
 import com.logistic_warehouse.utils.enu.helpers.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -41,7 +42,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF por ahora
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(ADMIN_SOURCES).hasAuthority("ADMIN")
-                        .requestMatchers(CARRIER_SOURCES).hasAuthority("CARRIER")// Permitir el acceso a /login sin autenticación
+                        .requestMatchers(CARRIER_SOURCES).hasAuthority("CARRIER")
+                        // Permitir el acceso a /login sin autenticación
                         .anyRequest().authenticated())        // Cualquier otra solicitud debe estar autenticada
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)// Stateless (sin sesión)

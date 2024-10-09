@@ -7,6 +7,6 @@ import com.logistic_warehouse.application.service.generic.ReadAll;
 import com.logistic_warehouse.application.service.generic.ReadById;
 import com.logistic_warehouse.domain.entities.ShipmentEntity;
 
-public interface IModelShipment extends Create<ShipmentRequestDTO,ShipmentEntity>, ReadAll<ShipmentEntity>, ReadById<Long,ShipmentEntity> {
+public interface IModelShipment extends Create<ShipmentRequestDTO,ShipmentCreateResponseDTO>, ReadAll<ShipmentEntity>, ReadById<Long,ShipmentEntity> {
 
 }

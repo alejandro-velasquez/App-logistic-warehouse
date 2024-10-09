@@ -1,6 +1,7 @@
 package com.logistic_warehouse.infrastructure.controller.impl;
 
 import com.logistic_warehouse.application.dto.request.PalletRequestCreateDTO;
+import com.logistic_warehouse.application.dto.response.PalletResponseReadAllDTO;
 import com.logistic_warehouse.domain.entities.PalletEntity;
 import com.logistic_warehouse.domain.imodel.IModelPallet;
 import com.logistic_warehouse.infrastructure.controller.interfaces.IPalletController;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/pallets")
@@ -68,5 +71,12 @@ public class PalletController implements IPalletController {
     @Override
     public ResponseEntity<?> delete(PalletEntity palletEntity) {
         return null;
+    }
+
+
+    @GetMapping("/read-all")
+    @Override
+    public ResponseEntity<List<PalletResponseReadAllDTO>> readAll() {
+        return ResponseEntity.ok(palletService.readAll());
     }
 }
