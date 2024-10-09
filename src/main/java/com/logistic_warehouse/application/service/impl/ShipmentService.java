@@ -1,8 +1,10 @@
 package com.logistic_warehouse.application.service.impl;
 
 import com.logistic_warehouse.application.dto.request.ShipmentRequestDTO;
+import com.logistic_warehouse.application.dto.request.ShipmentUpdateRequestDTO;
 import com.logistic_warehouse.application.dto.response.PalletDTO;
 import com.logistic_warehouse.application.dto.response.ShipmentCreateResponseDTO;
+import com.logistic_warehouse.application.dto.response.ShipmentUpdateResponseDTO;
 import com.logistic_warehouse.domain.entities.PalletEntity;
 import com.logistic_warehouse.domain.entities.ShipmentEntity;
 import com.logistic_warehouse.domain.imodel.IModelShipment;
@@ -104,5 +106,23 @@ public class ShipmentService implements IModelShipment {
         ShipmentEntity shipment = shipmentRepository.findById(id).orElseThrow(()->new EntityNotFoundException("shipment id not exist"));
 
         return shipment;
+    }
+
+
+
+    @Override
+    public ShipmentUpdateResponseDTO update(ShipmentUpdateRequestDTO shipmentUpdateRequestDTO, Long id) {
+
+        Optional<ShipmentEntity> shipment = shipmentRepository.findById(id);
+
+        if(shipment.isEmpty()){
+            throw new EntityNotFoundException("entity with " + id + " not found");
+        }
+
+       ShipmentEntity shipmentSave =  shipmentRepository.save(shipmentMapper.toShipmentRequestDTOToShipment(shipmentUpdateRequestDTO));
+
+
+
+        return shipmentMapper.toShipmentToShipmentResponseDTO(shipmentSave);
     }
 }

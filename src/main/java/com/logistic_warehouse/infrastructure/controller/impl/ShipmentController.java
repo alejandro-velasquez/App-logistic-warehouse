@@ -1,12 +1,14 @@
 package com.logistic_warehouse.infrastructure.controller.impl;
 
 import com.logistic_warehouse.application.dto.request.ShipmentRequestDTO;
+import com.logistic_warehouse.application.dto.request.ShipmentUpdateRequestDTO;
 import com.logistic_warehouse.domain.entities.ShipmentEntity;
 import com.logistic_warehouse.domain.imodel.IModelShipment;
 import com.logistic_warehouse.infrastructure.controller.interfaces.IShipmentController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +43,8 @@ public class ShipmentController implements IShipmentController {
        }
     }
 
+
+
     @Override
     public ResponseEntity<?> delete(ShipmentEntity shipmentEntity) {
         return null;
@@ -60,6 +64,8 @@ public class ShipmentController implements IShipmentController {
         return ResponseEntity.status(HttpStatus.OK).body(shipmentService.readAll());
     }
 
+
+
     @Operation(
             summary = "Retrieve a Shipment by ID",
             description = "Fetch a specific shipment by its unique ID."
@@ -72,5 +78,18 @@ public class ShipmentController implements IShipmentController {
     @Override
     public ResponseEntity<?> readById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(shipmentService.readById(id));
+    }
+
+
+
+    @PutMapping("/update/{id}")
+    @Override
+    public ResponseEntity<?> update(@PathVariable Long id,@RequestBody @Valid ShipmentUpdateRequestDTO shipmentUpdateRequestDTO) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(shipmentService.update(shipmentUpdateRequestDTO,id));
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+
     }
 }

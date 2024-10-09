@@ -1,5 +1,7 @@
 package com.logistic_warehouse.application.service.generic;
 
-//public interface Update <Entity,ID>{
-//    Entity update(Entity entity, ID id);
-//}
+import org.springframework.http.ResponseEntity;
+
+public interface Update <ID,Entity,EntityRequest> {
+    Entity update(EntityRequest entityRequest, ID id);
+}

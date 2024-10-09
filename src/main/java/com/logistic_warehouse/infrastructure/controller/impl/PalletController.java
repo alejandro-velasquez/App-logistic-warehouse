@@ -54,6 +54,7 @@ public class PalletController implements IPalletController {
     }
 
 
+
     @Operation(
             summary = "Update an existing Pallet",
             description = "Updates the details of an existing pallet. The request body should contain the new information, and the ID should correspond to the pallet being updated."
@@ -80,6 +81,7 @@ public class PalletController implements IPalletController {
     public ResponseEntity<List<PalletResponseReadAllDTO>> readAll() {
         return ResponseEntity.ok(palletService.readAll());
     }
+
 
 
     @GetMapping("/read-by-id/{id}")

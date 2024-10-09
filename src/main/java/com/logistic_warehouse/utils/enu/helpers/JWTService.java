@@ -26,10 +26,10 @@ public class JWTService {
 
     public String generateJWT(Map<String, Object> claims, UserEntity user) {
         return Jwts.builder()
-                .setClaims(claims)  // Cambiado de claims() a setClaims()
+                .setClaims(claims)
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 100 * 60 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000)) //una hora
                 .signWith(getKey())
                 .compact();
     }
