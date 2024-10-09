@@ -34,7 +34,11 @@ public class ShipmentController implements IShipmentController {
     @PostMapping("/create")
     @Override
     public ResponseEntity<?> create(@RequestBody @Valid ShipmentRequestDTO shipmentRequestDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(shipmentService.create(shipmentRequestDTO));
+       try {
+           return ResponseEntity.status(HttpStatus.CREATED).body(shipmentService.create(shipmentRequestDTO));
+       }catch (IllegalArgumentException e){
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+       }
     }
 
     @Override

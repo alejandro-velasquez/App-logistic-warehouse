@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ShipmentService implements IModelShipment {
@@ -30,11 +31,33 @@ public class ShipmentService implements IModelShipment {
 
     @Autowired
     PalletMapper palletMapper;
+
     @Override
     public ShipmentCreateResponseDTO create(ShipmentRequestDTO shipmentRequestDTO) {
 
         Optional<PalletEntity> pallet = palletRepository.findById(shipmentRequestDTO.getPallet());
 //        ShipmentEntity shipmentExist = shipmentRepository.findById(shipmentRequestDTO.getPallet()).orElseThrow(() -> new EntityNotFoundException("shipment id not found"));
+
+        if(pallet.isPresent()){
+            PalletEntity palletEntity = pallet.get();
+
+            if(palletEntity.getCapacity() < shipmentRequestDTO.getWeight()){
+            throw new IllegalArgumentException("pallet doesnt have capacity");
+            }
+
+        Set<ShipmentEntity> palletEntities = palletEntity.getShipments();
+
+        Double totalWeightShipments = palletEntities.stream()
+                .mapToDouble(ShipmentEntity::getWeight)
+                .sum();
+
+            if(totalWeightShipments + shipmentRequestDTO.getWeight() > palletEntity.getCapacity()){
+            throw new IllegalArgumentException("You need to enter a lighter load");
+            }
+        }
+
+
+
 
 
         ShipmentEntity shipment = ShipmentEntity.builder()
