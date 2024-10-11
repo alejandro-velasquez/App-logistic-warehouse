@@ -103,9 +103,7 @@ public class ShipmentService implements IModelShipment {
     @Override
     public ShipmentEntity readById(Long id) {
 
-        ShipmentEntity shipment = shipmentRepository.findById(id).orElseThrow(()->new EntityNotFoundException("shipment id not exist"));
-
-        return shipment;
+        return shipmentRepository.findById(id).orElseThrow(()->new EntityNotFoundException("shipment id not exist"));
     }
 
 
@@ -116,10 +114,6 @@ public class ShipmentService implements IModelShipment {
         ShipmentEntity shipment = shipmentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Shipment with id " + id + " not found"));
 
-
-        // Actualiza los campos de la entidad existente con los datos del DTO
-//        shipmentMapper.toShipmentRequestDTOToShipment(shipmentUpdateRequestDTO);
-
         shipment.setDimensionHeight(shipmentUpdateRequestDTO.getDimensionHeight());
         shipment.setDimensionLarge(shipmentUpdateRequestDTO.getDimensionLarge());
         shipment.setDimensionWidth(shipmentUpdateRequestDTO.getDimensionWidth());
@@ -128,19 +122,14 @@ public class ShipmentService implements IModelShipment {
 
         Long palletId = shipmentUpdateRequestDTO.getPallet();
         if (palletId != null) {
-            // Busca el pallet por ID
+
             PalletEntity pallet = palletRepository.findById(palletId)
                     .orElseThrow(() -> new EntityNotFoundException("Pallet with id " + palletId + " not found"));
-            shipment.setPallet(pallet); // Asigna el pallet existente
+            shipment.setPallet(pallet);
         }
-
-
-
-        // Guarda la entidad actualizada
 
         shipmentRepository.save(shipment);
 
-        // Retorna el DTO de respuesta
         return shipmentMapper.toShipmentToShipmentResponseDTO(shipment);
     }
 }
