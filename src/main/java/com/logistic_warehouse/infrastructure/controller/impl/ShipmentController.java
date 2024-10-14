@@ -1,5 +1,6 @@
 package com.logistic_warehouse.infrastructure.controller.impl;
 
+import com.logistic_warehouse.application.dto.request.ShipmentAssignCarrierRequestDTO;
 import com.logistic_warehouse.application.dto.request.ShipmentPatchRequestDTO;
 import com.logistic_warehouse.application.dto.request.ShipmentRequestDTO;
 import com.logistic_warehouse.application.dto.request.ShipmentUpdateRequestDTO;
@@ -97,5 +98,11 @@ public class ShipmentController implements IShipmentController {
     public ResponseEntity<?> updateStatus(@RequestBody ShipmentStatus status, @PathVariable Long id) {
 
         return ResponseEntity.status(HttpStatus.OK).body(shipmentService.updateStatus(status, id));
+    }
+
+    @PatchMapping("/assign-carrier/{id}")
+    @Override
+    public ResponseEntity<?> AssignCarrier(@RequestBody @Valid ShipmentAssignCarrierRequestDTO shipmentAssignCarrierRequestDTO,@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(shipmentService.assignCarrier(shipmentAssignCarrierRequestDTO,id));
     }
 }

@@ -1,8 +1,10 @@
 package com.logistic_warehouse.domain.imodel;
 
+import com.logistic_warehouse.application.dto.request.ShipmentAssignCarrierRequestDTO;
 import com.logistic_warehouse.application.dto.request.ShipmentPatchRequestDTO;
 import com.logistic_warehouse.application.dto.request.ShipmentRequestDTO;
 import com.logistic_warehouse.application.dto.request.ShipmentUpdateRequestDTO;
+import com.logistic_warehouse.application.dto.response.ShipmentAssignCarrierResponseDTO;
 import com.logistic_warehouse.application.dto.response.ShipmentCreateResponseDTO;
 import com.logistic_warehouse.application.dto.response.ShipmentPathResponseDTO;
 import com.logistic_warehouse.application.dto.response.ShipmentUpdateResponseDTO;
@@ -17,5 +19,6 @@ public interface IModelShipment extends Create<ShipmentRequestDTO,ShipmentCreate
                 , Update<Long,ShipmentUpdateResponseDTO, ShipmentUpdateRequestDTO> {
 
     ShipmentPathResponseDTO updateStatus(ShipmentStatus status, Long id);
+    ShipmentAssignCarrierResponseDTO assignCarrier(ShipmentAssignCarrierRequestDTO carrier, Long id);
 
 }

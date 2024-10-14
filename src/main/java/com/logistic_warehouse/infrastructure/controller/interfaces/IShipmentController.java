@@ -1,5 +1,6 @@
 package com.logistic_warehouse.infrastructure.controller.interfaces;
 
+import com.logistic_warehouse.application.dto.request.ShipmentAssignCarrierRequestDTO;
 import com.logistic_warehouse.application.dto.request.ShipmentPatchRequestDTO;
 import com.logistic_warehouse.application.dto.request.ShipmentRequestDTO;
 import com.logistic_warehouse.application.dto.request.ShipmentUpdateRequestDTO;
@@ -13,4 +14,5 @@ public interface IShipmentController extends Create<ShipmentRequestDTO>, Delete<
 
 
     ResponseEntity<?> updateStatus(ShipmentStatus status, Long id);
+    ResponseEntity<?> AssignCarrier(ShipmentAssignCarrierRequestDTO shipmentAssignCarrierRequestDTO, Long id);
 }

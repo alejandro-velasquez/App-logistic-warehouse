@@ -1,22 +1,23 @@
 package com.logistic_warehouse.application.service.impl;
 
+import com.logistic_warehouse.application.dto.request.ShipmentAssignCarrierRequestDTO;
 import com.logistic_warehouse.application.dto.request.ShipmentPatchRequestDTO;
 import com.logistic_warehouse.application.dto.request.ShipmentRequestDTO;
 import com.logistic_warehouse.application.dto.request.ShipmentUpdateRequestDTO;
-import com.logistic_warehouse.application.dto.response.PalletDTO;
-import com.logistic_warehouse.application.dto.response.ShipmentCreateResponseDTO;
-import com.logistic_warehouse.application.dto.response.ShipmentPathResponseDTO;
-import com.logistic_warehouse.application.dto.response.ShipmentUpdateResponseDTO;
+import com.logistic_warehouse.application.dto.response.*;
 import com.logistic_warehouse.domain.entities.PalletEntity;
 import com.logistic_warehouse.domain.entities.ShipmentEntity;
+import com.logistic_warehouse.domain.entities.UserEntity;
 import com.logistic_warehouse.domain.imodel.IModelShipment;
 import com.logistic_warehouse.infrastructure.mappers.PalletMapper;
 import com.logistic_warehouse.infrastructure.mappers.ShipmentMapper;
 import com.logistic_warehouse.infrastructure.persistence.PalletRepository;
 import com.logistic_warehouse.infrastructure.persistence.ShipmentRepository;
+import com.logistic_warehouse.infrastructure.persistence.UserRepository;
 import com.logistic_warehouse.utils.enu.ShipmentStatus;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +38,9 @@ public class ShipmentService implements IModelShipment {
 
     @Autowired
     PalletMapper palletMapper;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public ShipmentCreateResponseDTO create(ShipmentRequestDTO shipmentRequestDTO) {
@@ -156,6 +160,39 @@ public class ShipmentService implements IModelShipment {
 
         shipmentPathResponseDTO.setMessage("status updated");
         return shipmentPathResponseDTO;
+    }
+
+    @Override
+    public ShipmentAssignCarrierResponseDTO assignCarrier(ShipmentAssignCarrierRequestDTO carrier, Long id) {
+
+        ShipmentEntity shipment = shipmentRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Entity not found"));
+
+        UserEntity userExist = userRepository.findByUsername(carrier.getUserCarrier());
+
+        if(userExist == null){
+            throw new UsernameNotFoundException("username not found");
+        }
+
+
+//        UserEntity userCarrier = shipmentMapper.stringToUserEntity(carrier.getUserCarrier());
+
+        shipment.setUserCarrier(userExist);
+
+        shipmentRepository.save(shipment);
+
+        PalletDTO palletDTO = shipmentMapper.palletToPalleDTO(shipment.getPallet());
+        ShipmentUpdateCarrierResponseDTO carrierResponse = shipmentMapper.userToUserResponseDTO(userExist);
+
+        return ShipmentAssignCarrierResponseDTO.builder()
+                .id(shipment.getId())
+                .weight(shipment.getWeight())
+                .dimensionHeight(shipment.getDimensionHeight())
+                .dimensionWidth(shipment.getDimensionWidth())
+                .dimensionLarge(shipment.getDimensionLarge())
+                .pallet(palletDTO)
+                .userCarrier(carrierResponse)
+                .status(shipment.getStatus())
+                .build();
     }
 }
 
