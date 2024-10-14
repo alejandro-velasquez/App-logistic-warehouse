@@ -1,10 +1,12 @@
 package com.logistic_warehouse.infrastructure.controller.impl;
 
+import com.logistic_warehouse.application.dto.request.ShipmentPatchRequestDTO;
 import com.logistic_warehouse.application.dto.request.ShipmentRequestDTO;
 import com.logistic_warehouse.application.dto.request.ShipmentUpdateRequestDTO;
 import com.logistic_warehouse.domain.entities.ShipmentEntity;
 import com.logistic_warehouse.domain.imodel.IModelShipment;
 import com.logistic_warehouse.infrastructure.controller.interfaces.IShipmentController;
+import com.logistic_warehouse.utils.enu.ShipmentStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -36,13 +38,12 @@ public class ShipmentController implements IShipmentController {
     @PostMapping("/create")
     @Override
     public ResponseEntity<?> create(@RequestBody @Valid ShipmentRequestDTO shipmentRequestDTO) {
-       try {
-           return ResponseEntity.status(HttpStatus.CREATED).body(shipmentService.create(shipmentRequestDTO));
-       }catch (IllegalArgumentException e){
-          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-       }
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(shipmentService.create(shipmentRequestDTO));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
-
 
 
     @Override
@@ -65,7 +66,6 @@ public class ShipmentController implements IShipmentController {
     }
 
 
-
     @Operation(
             summary = "Retrieve a Shipment by ID",
             description = "Fetch a specific shipment by its unique ID."
@@ -81,15 +81,21 @@ public class ShipmentController implements IShipmentController {
     }
 
 
-
     @PutMapping("/update/{id}")
     @Override
-    public ResponseEntity<?> update(@PathVariable Long id,@RequestBody @Valid ShipmentUpdateRequestDTO shipmentUpdateRequestDTO) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid ShipmentUpdateRequestDTO shipmentUpdateRequestDTO) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(shipmentService.update(shipmentUpdateRequestDTO,id));
-        }catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.OK).body(shipmentService.update(shipmentUpdateRequestDTO, id));
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
 
+    }
+
+    @PatchMapping("/update-status/{id}")
+    @Override
+    public ResponseEntity<?> updateStatus(@RequestBody ShipmentStatus status, @PathVariable Long id) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(shipmentService.updateStatus(status, id));
     }
 }

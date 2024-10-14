@@ -1,9 +1,11 @@
 package com.logistic_warehouse.application.service.impl;
 
+import com.logistic_warehouse.application.dto.request.ShipmentPatchRequestDTO;
 import com.logistic_warehouse.application.dto.request.ShipmentRequestDTO;
 import com.logistic_warehouse.application.dto.request.ShipmentUpdateRequestDTO;
 import com.logistic_warehouse.application.dto.response.PalletDTO;
 import com.logistic_warehouse.application.dto.response.ShipmentCreateResponseDTO;
+import com.logistic_warehouse.application.dto.response.ShipmentPathResponseDTO;
 import com.logistic_warehouse.application.dto.response.ShipmentUpdateResponseDTO;
 import com.logistic_warehouse.domain.entities.PalletEntity;
 import com.logistic_warehouse.domain.entities.ShipmentEntity;
@@ -12,10 +14,12 @@ import com.logistic_warehouse.infrastructure.mappers.PalletMapper;
 import com.logistic_warehouse.infrastructure.mappers.ShipmentMapper;
 import com.logistic_warehouse.infrastructure.persistence.PalletRepository;
 import com.logistic_warehouse.infrastructure.persistence.ShipmentRepository;
+import com.logistic_warehouse.utils.enu.ShipmentStatus;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
@@ -132,4 +136,26 @@ public class ShipmentService implements IModelShipment {
 
         return shipmentMapper.toShipmentToShipmentResponseDTO(shipment);
     }
+
+
+    @Override
+    public ShipmentPathResponseDTO updateStatus(ShipmentStatus status, Long id) {
+
+        ShipmentEntity shipmentId = shipmentRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("entity with id  " + id + " not found" ));
+        shipmentId.setStatus(status);
+
+//        ShipmentStatus statusM = shipmentMapper.stringToShipmentStatus(status);
+
+//        shipmentId.setStatus(statusM);
+
+        shipmentRepository.save(shipmentId);
+
+
+
+        ShipmentPathResponseDTO shipmentPathResponseDTO= shipmentMapper.shipmentToShipmentPatchDTO(shipmentId);
+
+        shipmentPathResponseDTO.setMessage("status updated");
+        return shipmentPathResponseDTO;
+    }
 }
+
