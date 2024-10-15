@@ -20,6 +20,5 @@ public class ShipmentListDTO {
     private Double dimensionWidth;
     private Double dimensionHeight;
     private ShipmentStatus status;
-    private UserEntity userCarrier;
-
+    private CarrierListResponseDTO userCarrier;
 }

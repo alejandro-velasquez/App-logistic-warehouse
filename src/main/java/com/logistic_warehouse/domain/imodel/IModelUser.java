@@ -5,4 +5,5 @@ import com.logistic_warehouse.application.service.generic.ReadById;
 
 public interface IModelUser {
     CarrierLoadsAssignedResponseDTO readById(Long id);
+
 }

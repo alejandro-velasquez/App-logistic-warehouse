@@ -13,4 +13,5 @@ public interface IPalletController extends Create<PalletRequestCreateDTO>, Delet
                 , ReadById<Long> {
     @DeleteMapping("{id}")
     ResponseEntity<?> delete(@PathVariable Long id);
+    ResponseEntity<?> palletLoads(Long id);
 }

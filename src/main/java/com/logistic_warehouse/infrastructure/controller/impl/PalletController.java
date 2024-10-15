@@ -53,6 +53,12 @@ public class PalletController implements IPalletController {
         return ResponseEntity.status(HttpStatus.OK).body(palletService.delete(id));
     }
 
+    @Override
+    @GetMapping("/{id}")
+    public ResponseEntity<?> palletLoads(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(palletService.readById(id));
+
+    }
 
 
     @Operation(
