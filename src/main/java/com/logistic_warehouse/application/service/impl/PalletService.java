@@ -11,6 +11,7 @@ import com.logistic_warehouse.infrastructure.mappers.PalletMapper;
 import com.logistic_warehouse.infrastructure.mappers.ShipmentMapper;
 import com.logistic_warehouse.infrastructure.persistence.PalletRepository;
 import com.logistic_warehouse.infrastructure.persistence.ShipmentRepository;
+import com.logistic_warehouse.utils.enu.PalletStatus;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,10 @@ public class PalletService implements IModelPallet {
 
     @Override
     public PalletEntity create(PalletRequestCreateDTO palletRequestCreateDTO) {
+        
+        if(palletRequestCreateDTO.getCapacity() <= 0){
+            throw new IllegalArgumentException("Error, el valor debe ser mayor a 0");
+        }
 
         PalletEntity pallet = PalletEntity.builder()
                 .capacity(palletRequestCreateDTO.getCapacity())
@@ -51,7 +56,7 @@ public class PalletService implements IModelPallet {
         Optional<PalletEntity> pallet = palletRepository.findById(id);
 
         if(pallet.isEmpty()){
-            throw new EntityNotFoundException("pallet id no exist");
+            throw new EntityNotFoundException("Pallet no encontrado, intente con otro ID.");
         }
 
          palletRepository.deleteById(id);
@@ -66,7 +71,11 @@ public class PalletService implements IModelPallet {
     @Override
     public PalletEntity update(PalletRequestCreateDTO palletRequestCreateDTO, Long id) {
 
-         PalletEntity palletExist = palletRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("pallet id not found"));
+         PalletEntity palletExist = palletRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Pallet ID no encontrado"));
+
+         if(palletRequestCreateDTO.getCapacity() <= 0){
+             throw new IllegalArgumentException("Error, el valor debe ser mayor a 0");
+         }
 
          palletExist.setCapacity(palletRequestCreateDTO.getCapacity());
          palletExist.setLocation(palletExist.getLocation());
@@ -88,7 +97,7 @@ public class PalletService implements IModelPallet {
         Optional<PalletEntity> pallet = palletRepository.findById(id);
 
         if(pallet.isEmpty()){
-            throw new EntityNotFoundException("entity not found");
+            throw new EntityNotFoundException("Pallet ID no encontrado");
         }
 
         return palletMapper.toPalleEntityToPalleResponseDTO(pallet.get());

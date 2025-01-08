@@ -1,38 +1,51 @@
 package com.logistic_warehouse.application.exeptions;
 
-import com.logistic_warehouse.application.handleerror.ErrorSimple;
 import com.logistic_warehouse.application.handleerror.ErrorsResponse;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
-@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 public class BadRequest {
 
-    @ExceptionHandler({MethodArgumentNotValidException.class, HttpMessageNotReadableException.class})
-    public ErrorsResponse badRequest(Exception exception){
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ErrorsResponse handleInvalidJson(HttpMessageNotReadableException exception) {
+        String errorMessage = "Formato invalido";
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, List.of(errorMessage));
+    }
 
-        List<String> errors = new ArrayList<>();
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ErrorsResponse handleValidationErrors(MethodArgumentNotValidException exception) {
+        List<String> errors = exception.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .collect(Collectors.toList());
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, errors);
+    }
 
-        if(exception instanceof MethodArgumentNotValidException e){
-            e.getAllErrors().forEach(error-> errors.add(error.getDefaultMessage()));
-        } else if (exception instanceof ConstraintViolationException e) {
-            e.getConstraintViolations().forEach(violation -> errors.add(violation.getMessage()));
-        }else {
-            errors.add(exception.getMessage());
-        }
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ErrorsResponse handleConstraintViolations(ConstraintViolationException exception) {
+        List<String> errors = exception.getConstraintViolations()
+                .stream()
+                .map(violation -> violation.getPropertyPath() + ": " + violation.getMessage())
+                .collect(Collectors.toList());
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, errors);
+    }
 
+
+
+    // Helper method to build a unified error response
+    private ErrorsResponse buildErrorResponse(HttpStatus status, List<String> errors) {
         return ErrorsResponse.builder()
-                .code(HttpStatus.BAD_REQUEST.value())
-                .status(HttpStatus.BAD_REQUEST.name())
+                .code(status.value())
+                .status(status.getReasonPhrase())
                 .errors(errors)
                 .build();
     }
