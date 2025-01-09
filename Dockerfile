@@ -1,8 +1,13 @@
+FROM maven:3-eclipse-temurin-22 AS build
+
+COPY . .
+
+RUN mvn clean package -DskipTests
+
 FROM openjdk:21-jdk-slim
 
-WORKDIR /app
 
-COPY target/App-logistic-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /target/App-logistic-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
 
