@@ -1,4 +1,4 @@
-# CRUD Logistic Pallet Managenment System
+# CRUD Logistic Pallet Management System
 This project is a system designed to manage pallets used in a logistic warehouse.Pallets are essential
 platforms for efficiently storing and transporting goods. With this system you can manage pallets and loads stored on them.
 
