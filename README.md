@@ -1,4 +1,4 @@
-# CRUD Logistic Pallet Management System
+# API for Logistic Pallet Management System
 This project is a system designed to manage pallets used in a logistic warehouse.Pallets are essential
 platforms for efficiently storing and transporting goods. With this system you can manage pallets and loads stored on them.
 
@@ -24,7 +24,7 @@ This system enables the creation, modification,delete and retrieval pallets, as 
 
 The application is deployed and available to everyone. You can access it through the provided URL and explore the API documentation via Swagger:
 
-- **Application URL Swagger**:
+- **Application URL Swagger**: [https://app-logistic-warehouse.onrender.com/swagger-ui/index.html#/](https://app-logistic-warehouse.onrender.com/swagger-ui/index.html#/)
 - **Access Credentianls**:
    - Username: admin
    - Password: admin123
