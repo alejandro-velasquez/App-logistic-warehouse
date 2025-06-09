@@ -41,14 +41,15 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF por ahora
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(ADMIN_SOURCES).hasAuthority("ADMIN")
-                        .requestMatchers(CARRIER_SOURCES).hasAuthority("CARRIER")
-                        // Permitir el acceso a /login sin autenticación
-                        .anyRequest().authenticated())        // Cualquier otra solicitud debe estar autenticada
+                        .requestMatchers("/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml",
+                                "/swagger-ui.html").permitAll()
+                        .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider)// Stateless (sin sesión)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .httpBasic(Customizer.withDefaults());  // No necesitas JWT por ahora, usas autenticación básica por POST
+                .authenticationProvider(authenticationProvider);
+
 
         return http.build();
     }
