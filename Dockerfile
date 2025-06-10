@@ -2,7 +2,7 @@ FROM maven:3-eclipse-temurin-22 AS build
 
 COPY . .
 
-RUN mvn clean package -DskipTests
+RUN mvn clean package -Dmaven.test.skip=true
 
 FROM openjdk:21-jdk-slim
 
